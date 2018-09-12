@@ -3,17 +3,26 @@ import { getKommunes, IKommune } from "../api";
 import ErrorBoundary from "./ErrorBoundary";
 import KommuneList from "./KommuneList";
 import ListFilter from "./ListFilter";
+import { IFilter } from "./ListFilter";
 
 interface IState {
   filteredKommunes: IKommune[];
   kommunes: IKommune[];
 }
 
-const matchDescription = (match: string) => (k: IKommune) => {
-  return k.description.toLowerCase().indexOf(match) !== -1;
+type FilterType = keyof IKommune;
+
+const matchDescription = (match: string, type: FilterType) => (k: IKommune) => {
+  return k[type].toLowerCase().indexOf(match) !== -1;
 };
 
 class App extends React.Component<{}, IState> {
+  private static defaultFilter: FilterType = "description";
+  private static filters: Array<IFilter<FilterType>> = [
+    { type: "description", text: "Description" },
+    { type: "label", text: "Label" },
+    { type: "status", text: "Status" }
+  ];
   public state: IState = {
     filteredKommunes: [],
     kommunes: []
@@ -29,17 +38,19 @@ class App extends React.Component<{}, IState> {
   public render() {
     return (
       <ErrorBoundary>
-        <ListFilter
+        <ListFilter<FilterType>
           placeHolder={"Type keyword to filter"}
+          defaultFilter={App.defaultFilter}
+          filters={App.filters}
           onFilterChanged={this.handleFilterChanged}
         />
         <KommuneList kommunes={this.state.filteredKommunes} />
       </ErrorBoundary>
     );
   }
-  private handleFilterChanged = (newFilter: string) => {
+  private handleFilterChanged = (keyword: string, type: FilterType) => {
     if (this.state.kommunes.length > 0) {
-      const match = matchDescription(newFilter);
+      const match = matchDescription(keyword, type);
       this.setState({
         filteredKommunes: this.state.kommunes.filter(match)
       });
