@@ -1,4 +1,21 @@
 import * as React from "react";
+import styled from "styled-components";
+
+const Container = styled.div`
+  width: 100%;
+  margin: 10px 0;
+`;
+
+const Row = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0;
+`;
+
+const Column = styled.div`
+  width: 30%;
+  text-align: center;
+`;
 
 interface IHeader<T> {
   key: T;
@@ -12,25 +29,25 @@ interface IProps<T> {
 class List<T extends object> extends React.PureComponent<IProps<T>> {
   public render() {
     const headers = (
-      <tr>
+      <Row>
         {this.props.headers.map((h, i) => (
-          <th key={i}>{h.text}</th>
+          <Column key={i}>{h.text}</Column>
         ))}
-      </tr>
+      </Row>
     );
     const rows = this.props.source.map((e, i) => (
-      <tr key={i}>
+      <Row key={i}>
         {this.props.headers.map((h, ii) => (
-          <td key={ii}>{e[h.key]}</td>
+          <Column key={ii}>{e[h.key]}</Column>
         ))}
-      </tr>
+      </Row>
     ));
 
     return (
-      <table>
-        <thead>{headers}</thead>
-        <tbody>{rows}</tbody>
-      </table>
+      <Container>
+        {headers}
+        {rows}
+      </Container>
     );
   }
 }

@@ -1,8 +1,19 @@
 import * as React from "react";
+import styled from "styled-components";
 import { getKommunes, IKommune } from "../api";
 import ErrorBoundary from "./ErrorBoundary";
 import List from "./List";
 import ListFilter, { IFilter } from "./ListFilter";
+
+const Wrapper = styled.div`
+  margin: 0 auto;
+  padding: 20px;
+  width: 50%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 interface IState {
   filteredKommunes: IKommune[];
@@ -37,16 +48,18 @@ class App extends React.Component<{}, IState> {
   public render() {
     return (
       <ErrorBoundary>
-        <ListFilter<FilterType>
-          placeHolder={"Type keyword to filter"}
-          defaultFilter={App.defaultFilter}
-          filters={App.filters}
-          onFilterChanged={this.handleFilterChanged}
-        />
-        <List<IKommune>
-          headers={App.filters.map(f => ({ key: f.type, text: f.text }))}
-          source={this.state.filteredKommunes}
-        />
+        <Wrapper>
+          <ListFilter<FilterType>
+            placeHolder={"Search"}
+            defaultFilter={App.defaultFilter}
+            filters={App.filters}
+            onFilterChanged={this.handleFilterChanged}
+          />
+          <List<IKommune>
+            headers={App.filters.map(f => ({ key: f.type, text: f.text }))}
+            source={this.state.filteredKommunes}
+          />
+        </Wrapper>
       </ErrorBoundary>
     );
   }
