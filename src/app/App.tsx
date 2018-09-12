@@ -1,9 +1,8 @@
 import * as React from "react";
 import { getKommunes, IKommune } from "../api";
 import ErrorBoundary from "./ErrorBoundary";
-import KommuneList from "./KommuneList";
-import ListFilter from "./ListFilter";
-import { IFilter } from "./ListFilter";
+import List from "./List";
+import ListFilter, { IFilter } from "./ListFilter";
 
 interface IState {
   filteredKommunes: IKommune[];
@@ -44,7 +43,10 @@ class App extends React.Component<{}, IState> {
           filters={App.filters}
           onFilterChanged={this.handleFilterChanged}
         />
-        <KommuneList kommunes={this.state.filteredKommunes} />
+        <List<IKommune>
+          headers={App.filters.map(f => ({ key: f.type, text: f.text }))}
+          source={this.state.filteredKommunes}
+        />
       </ErrorBoundary>
     );
   }
