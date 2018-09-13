@@ -23,7 +23,7 @@ interface IState {
 type FilterType = keyof IKommune;
 
 const matchDescription = (match: string, type: FilterType) => (k: IKommune) => {
-  return k[type].toLowerCase().indexOf(match) !== -1;
+  return k[type].toLowerCase().indexOf(match.toLowerCase()) !== -1;
 };
 
 class App extends React.Component<{}, IState> {
