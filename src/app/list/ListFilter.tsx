@@ -110,8 +110,9 @@ class ListFilter<T extends string> extends React.PureComponent<
           onChange={this.handleKeywordChanged}
         />
         <FilterSection>
-          {this.props.filters.map(f => (
+          {this.props.filters.map((f, i) => (
             <FilterTypeButton
+              key={i}
               selected={this.state.selectedFilter === f.type}
               value={f.type}
               onClick={this.handleFilterSelected}
