@@ -1,10 +1,8 @@
 import * as React from "react";
 import styled from "styled-components";
+import { Container } from "./styledElements";
 
-const Container = styled.div`
-  width: 100%;
-  margin: 10px 0;
-
+const FilterContainer = styled(Container)`
   font-size: 14px;
 
   display: flex;
@@ -99,7 +97,7 @@ class ListFilter<T extends string> extends React.PureComponent<
   };
   public render() {
     return (
-      <Container>
+      <FilterContainer>
         <KeywordInput
           placeholder={this.props.placeHolder}
           onChange={this.handleKeywordChanged}
@@ -115,7 +113,7 @@ class ListFilter<T extends string> extends React.PureComponent<
             </FilterTypeButton>
           ))}
         </FilterSection>
-      </Container>
+      </FilterContainer>
     );
   }
   private handleKeywordChanged = (

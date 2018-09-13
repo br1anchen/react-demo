@@ -2,8 +2,8 @@ import * as React from "react";
 import styled from "styled-components";
 import { getKommunes, IKommune } from "../api";
 import ErrorBoundary from "./ErrorBoundary";
-import List from "./List";
-import ListFilter, { IFilter } from "./ListFilter";
+import List from "./list";
+import ListFilter, { IFilter } from "./list/ListFilter";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -49,13 +49,13 @@ class App extends React.Component<{}, IState> {
     return (
       <ErrorBoundary>
         <Wrapper>
-          <ListFilter<FilterType>
+          <ListFilter
             placeHolder={"Search"}
             defaultFilter={App.defaultFilter}
             filters={App.filters}
             onFilterChanged={this.handleFilterChanged}
           />
-          <List<IKommune>
+          <List
             headers={App.filters.map(f => ({ key: f.type, text: f.text }))}
             source={this.state.filteredKommunes}
           />
