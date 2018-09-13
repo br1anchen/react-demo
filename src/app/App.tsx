@@ -16,13 +16,21 @@ const Wrapper = styled.div`
 `;
 
 interface IState {
+  isLoaded: boolean;
   filteredKommunes: IKommune[];
   kommunes: IKommune[];
 }
 
 type FilterType = keyof IKommune;
 
-const matchDescription = (match: string, type: FilterType) => (k: IKommune) => {
+/**
+ * Factory function to make different match
+ *
+ * @param {string} match
+ * @param {FilterType} type
+ * @returns {Function} (k: IKommune) => boolean
+ */
+const makeMatcher = (match: string, type: FilterType) => (k: IKommune) => {
   return k[type].toLowerCase().indexOf(match.toLowerCase()) !== -1;
 };
 
@@ -35,12 +43,13 @@ class App extends React.Component<{}, IState> {
   ];
   public state: IState = {
     filteredKommunes: [],
+    isLoaded: false,
     kommunes: []
   };
   public async componentDidMount() {
     try {
       const kommunes = await getKommunes();
-      this.setState({ kommunes, filteredKommunes: kommunes });
+      this.setState({ kommunes, filteredKommunes: kommunes, isLoaded: true });
     } catch (e) {
       throw new Error(e);
     }
@@ -56,7 +65,8 @@ class App extends React.Component<{}, IState> {
             onFilterChanged={this.handleFilterChanged}
           />
           <List
-            headers={App.filters.map(f => ({ key: f.type, text: f.text }))}
+            isLoaded={this.state.isLoaded}
+            columns={App.filters.map(f => ({ key: f.type, text: f.text }))}
             source={this.state.filteredKommunes}
           />
         </Wrapper>
@@ -65,9 +75,9 @@ class App extends React.Component<{}, IState> {
   }
   private handleFilterChanged = (keyword: string, type: FilterType) => {
     if (this.state.kommunes.length > 0) {
-      const match = matchDescription(keyword, type);
+      const matcher = makeMatcher(keyword, type);
       this.setState({
-        filteredKommunes: this.state.kommunes.filter(match)
+        filteredKommunes: this.state.kommunes.filter(matcher)
       });
     }
   };

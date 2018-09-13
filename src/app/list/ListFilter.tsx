@@ -87,6 +87,13 @@ interface IState<T> {
   selectedFilter: T;
 }
 
+/**
+ * ListFilter component to control keyword search and filter types
+ *
+ * @class ListFilter
+ * @extends {React.PureComponent<IProps<T>, IState<T>>}
+ * @template T
+ */
 class ListFilter<T extends string> extends React.PureComponent<
   IProps<T>,
   IState<T>

@@ -8,37 +8,57 @@ const Header = styled(Row)`
   text-align: left;
 `;
 
-interface IHeader<T> {
+interface IColumn<T> {
   key: T;
   text: string;
 }
 interface IProps<T> {
-  headers: Array<IHeader<keyof T>>;
+  isLoaded: boolean;
+  columns: Array<IColumn<keyof T>>;
   source: T[];
 }
 
+/**
+ * List component to take generic source columned by headers
+ *
+ * @class List
+ * @extends {React.Component<IProps<T>>}
+ * @template T
+ */
 class List<T extends object> extends React.Component<IProps<T>> {
+  public static noMatchText = "No match";
+  public static loadingText = "Loading...";
+
   public render() {
-    const { headers, source } = this.props;
     const header = (
       <Header>
-        {headers.map((h, i) => (
-          <Column key={i} of={headers.length}>
+        {this.props.columns.map((h, i) => (
+          <Column key={i} of={this.props.columns.length}>
             {h.text}
           </Column>
         ))}
       </Header>
     );
-    const rows = source.map((e, i) => (
-      <ListEntry key={i} entryKeys={headers.map(h => h.key)} entry={e} />
-    ));
 
     return (
       <Container>
         {header}
-        {rows}
+        {this.getContent()}
       </Container>
     );
+  }
+
+  private getContent() {
+    const { columns, source, isLoaded } = this.props;
+    if (!isLoaded) {
+      return List.loadingText;
+    } else if (source.length === 0) {
+      return List.noMatchText;
+    } else {
+      return source.map((e, i) => (
+        <ListEntry key={i} entryKeys={columns.map(h => h.key)} entry={e} />
+      ));
+    }
   }
 }
 

@@ -7,7 +7,11 @@ export interface IKommune {
 interface IKommuneResponse {
   containeditems: IKommune[];
 }
-
+/**
+ * API to fetch kommune from server
+ *
+ * @returns Promise<IKommune[]>
+ */
 export const getKommunes = async () => {
   const response = await fetch(
     "https://register.geonorge.no/api/subregister/sosi-kodelister/kartverket/kommunenummer-alle.json"

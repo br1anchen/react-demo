@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+/**
+ * Styled components to be shared by list module components
+ */
+
 export const Container = styled.div`
   width: 100%;
   margin: 10px 0;
