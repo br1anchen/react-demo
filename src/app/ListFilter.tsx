@@ -5,20 +5,39 @@ const Container = styled.div`
   width: 100%;
   margin: 10px 0;
 
+  font-size: 14px;
+
   display: flex;
   justify-content: space-around;
 `;
 
 const KeywordInput = styled.input`
   width: 30%;
+  height: 32px;
 
   display: block;
-  padding: 10px;
-  box-shadow: grey 0px 1px 3px, grey 0px 1px 0px;
-  border: 0;
-  outline: 0;
+  padding: 4px 10px;
+  margin 0;
+  line-height: 1.5em;
+
+  box-sizing: border-box;
+  border: 1px solid #d9d9d9;
   border-radius: 4px;
-  background: white;
+  background-color: white;
+
+  transition: all .3s;
+
+  &:hover {
+    border-color: #40a9ff;
+    border-right-width: 1px;
+  }
+
+  &:focus {
+    border-color: #40a9ff;
+    outline: 0;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    border-right-width: 1px;
+  }
 `;
 
 const FilterSection = styled.div`
@@ -27,27 +46,30 @@ const FilterSection = styled.div`
 `;
 
 const FilterTypeButton = styled.button`
-  white-space: nowrap;
-  border: 0;
-  outline: 0;
+  height: 32px;
+
   display: inline-block;
-  padding: 10px;
-  margin-right: 2px;
-  box-shadow: grey 0px 1px 3px, grey 0px 1px 0px;
-  color: ${(props: { selected: boolean }) =>
-    props.selected ? "white" : "black"};
-  border-radius: 4px;
+  padding: 0 15px;
+  margin: 1px 0;
+  line-height: 1.5em;
+
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: center;
+  text-decoration: none;
   text-transform: uppercase;
 
-  background-color: ${props => (props.selected ? "grey" : "white")};
-  text-decoration: none;
-  -webkit-transition: all 150ms ease;
-  transition: all 150ms ease;
+  border-radius: 4px;
+  border: 1px solid #d9d9d9;
+  box-sizing: border-box;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+  outline: 0;
 
-  &:hover {
-    cursor: pointer;
-    transform: translateY(-1px);
-  }
+  color: ${(props: { selected: boolean }) =>
+    props.selected ? "white" : "black"};
+  background-color: ${props => (props.selected ? "#40a9ff" : "white")};
+
+  transition: all 0.3s;
 `;
 
 export interface IFilter<T> {
