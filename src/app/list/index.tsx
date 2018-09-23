@@ -8,6 +8,17 @@ const Header = styled(Row)`
   text-align: left;
 `;
 
+const makeSourceSetKey = <T extends object>(keys: Array<keyof T>) => (o: T) =>
+  keys.map(k => o[k]).join();
+const makeSourceSet = <T extends object>(
+  source: T[],
+  sourceSetKey: (e: T) => string
+) => {
+  const sourceSet = new Set<string>();
+  source.forEach(e => sourceSet.add(sourceSetKey(e)));
+  return sourceSet;
+};
+
 interface IColumn<T> {
   key: T;
   text: string;
@@ -25,9 +36,26 @@ interface IProps<T> {
  * @extends {React.Component<IProps<T>>}
  * @template T
  */
-class List<T extends object> extends React.Component<IProps<T>> {
+class List<T extends object> extends React.PureComponent<IProps<T>> {
   public static noMatchText = "No match";
   public static loadingText = "Loading...";
+
+  public shouldComponentUpdate(nextProps: IProps<T>) {
+    if (
+      nextProps.source.length !== this.props.source.length ||
+      nextProps.isLoaded !== this.props.isLoaded ||
+      nextProps.columns.length !== this.props.columns.length
+    ) {
+      return true;
+    }
+
+    const sourceSetKey = makeSourceSetKey(this.props.columns.map(c => c.key));
+    const oldSourceSet = makeSourceSet(this.props.source, sourceSetKey);
+    return (
+      nextProps.columns.some(c => !(this.props.columns.indexOf(c) !== -1)) &&
+      nextProps.source.some(e => !oldSourceSet.has(sourceSetKey(e)))
+    );
+  }
 
   public render() {
     const header = (
