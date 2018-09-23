@@ -8,7 +8,10 @@ import ListFilter, { IFilter } from "./list/ListFilter";
 const Wrapper = styled.div`
   margin: 0 auto;
   padding: 20px;
-  width: 50%;
+
+  @media (min-width: 1024px) {
+    width: 50%;
+  }
 
   display: flex;
   flex-direction: column;
