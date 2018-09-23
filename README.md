@@ -18,4 +18,4 @@ now
 
 # Current public host
 
-<https://react-demo-ejhjsiihzf.now.sh/>
+<https://react-demo-ddekuvgicm.now.sh/>
