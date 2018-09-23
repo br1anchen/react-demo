@@ -1,5 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
+import { debounce, throttle } from "throttle-debounce";
 import { Container } from "./styledElements";
 
 const FilterContainer = styled(Container)`
@@ -98,10 +99,18 @@ class ListFilter<T extends string> extends React.PureComponent<
   IProps<T>,
   IState<T>
 > {
-  public state: IState<T> = {
-    keyword: "",
-    selectedFilter: this.props.defaultFilter
-  };
+  private handleFilterChangedThrottled: () => any;
+  private handleFilterChangedDebounced: () => any;
+
+  constructor(props: IProps<T>) {
+    super(props);
+    this.state = {
+      keyword: "",
+      selectedFilter: this.props.defaultFilter
+    };
+    this.handleFilterChangedThrottled = throttle(500, this.handleFilterChanged);
+    this.handleFilterChangedDebounced = debounce(500, this.handleFilterChanged);
+  }
   public render() {
     return (
       <FilterContainer>
@@ -128,10 +137,14 @@ class ListFilter<T extends string> extends React.PureComponent<
   private handleKeywordChanged = (
     evt: React.SyntheticEvent<HTMLInputElement>
   ) => {
-    this.setState(
-      { keyword: evt.currentTarget.value },
-      this.handleFilterChanged
-    );
+    this.setState({ keyword: evt.currentTarget.value }, () => {
+      const { keyword } = this.state;
+      if (keyword.length < 3) {
+        this.handleFilterChangedThrottled();
+      } else {
+        this.handleFilterChangedDebounced();
+      }
+    });
   };
   private handleFilterSelected = (
     evt: React.SyntheticEvent<HTMLButtonElement>
