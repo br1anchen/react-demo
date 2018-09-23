@@ -36,7 +36,7 @@ interface IProps<T> {
  * @extends {React.Component<IProps<T>>}
  * @template T
  */
-class List<T extends object> extends React.PureComponent<IProps<T>> {
+class List<T extends object> extends React.Component<IProps<T>> {
   public static noMatchText = "No match";
   public static loadingText = "Loading...";
 
