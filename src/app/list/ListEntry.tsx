@@ -16,8 +16,8 @@ class ListEntry<T extends object> extends React.PureComponent<IEntryProps<T>> {
   public render() {
     return (
       <Row>
-        {this.props.entryKeys.map((k, ii) => (
-          <Column key={ii} of={this.props.entryKeys.length}>
+        {this.props.entryKeys.map((k, i) => (
+          <Column key={i} of={this.props.entryKeys.length}>
             {this.props.entry[k]}
           </Column>
         ))}

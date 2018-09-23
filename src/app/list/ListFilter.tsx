@@ -106,6 +106,7 @@ class ListFilter<T extends string> extends React.PureComponent<
     return (
       <FilterContainer>
         <KeywordInput
+          value={this.state.keyword}
           placeholder={this.props.placeHolder}
           onChange={this.handleKeywordChanged}
         />
@@ -136,7 +137,10 @@ class ListFilter<T extends string> extends React.PureComponent<
     evt: React.SyntheticEvent<HTMLButtonElement>
   ) => {
     this.setState(
-      { selectedFilter: evt.currentTarget.value as T },
+      {
+        keyword: "",
+        selectedFilter: evt.currentTarget.value as T
+      },
       this.handleFilterChanged
     );
   };
