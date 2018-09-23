@@ -34,7 +34,7 @@ type FilterType = keyof IKommune;
  * @returns {Function} (k: IKommune) => boolean
  */
 const makeMatcher = (match: string, type: FilterType) => (k: IKommune) => {
-  return k[type].toLowerCase().indexOf(match.toLowerCase()) !== -1;
+  return k[type].toLowerCase().indexOf(match.trim().toLowerCase()) !== -1;
 };
 
 class App extends React.Component<{}, IState> {
@@ -54,7 +54,7 @@ class App extends React.Component<{}, IState> {
       const kommunes = await getKommunes();
       this.setState({ kommunes, filteredKommunes: kommunes, isLoaded: true });
     } catch (e) {
-      throw new Error(e);
+      this.setState({ isLoaded: false });
     }
   }
   public render() {
